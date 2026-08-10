@@ -4,6 +4,8 @@
 
 **Product documentation · Active development**
 
+![EU Maritime & Port Opportunity Monitor](assets/social-preview.png)
+
 EU Maritime & Port Opportunity Monitor is an Apify Actor that turns official Spanish and European
 procurement signals into qualified lifecycle events. It helps contractors, engineering consultancies,
 equipment suppliers and business-development teams follow relevant opportunities without reading an
