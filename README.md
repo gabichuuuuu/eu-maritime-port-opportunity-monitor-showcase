@@ -1,5 +1,7 @@
 # EU Maritime & Port Opportunity Monitor
 
+### Monitor Europeo de Oportunidades Marítimas y Portuarias
+
 > Procurement intelligence for companies working in ports, maritime construction and coastal infrastructure.
 
 **Private source · Public showcase · Work in progress**
@@ -11,6 +13,8 @@ ports, dredging, coastal works, terminals, shore power and related maritime engi
 The source project remains private. This repository is the public window into the product: it explains
 the problem, the signal model and the intended workflow without publishing implementation code, private
 test data or deployment configuration.
+
+**[View the live Actor on Apify →](https://apify.com/dekaz/eu-maritime-port-opportunity-monitor)**
 
 ## What it monitors
 
@@ -84,6 +88,12 @@ This showcase does not contain:
 Examples and future screenshots will use synthetic or deliberately anonymised data. Official values
 remain attributable to their source and should be verified before bidding.
 
+## About this repository
+
+This is a documentation-first showcase. The private source repository is the system of record; this
+repository is synchronised from a reviewed public subset by GitHub Actions. See [NOTICE.md](NOTICE.md)
+for the publication boundary.
+
 ## En español
 
 EU Maritime & Port Opportunity Monitor es un Actor de Apify para empresas que buscan licitaciones y
@@ -93,8 +103,4 @@ terminales y descarbonización.
 No es un extractor de empleo. El código fuente permanece privado; este repositorio solo documenta el
 producto, su alcance y su evolución pública.
 
-## About this repository
-
-This is a documentation-first showcase. The private source repository is the system of record; this
-repository is synchronised from a reviewed public subset by GitHub Actions. See [NOTICE.md](NOTICE.md)
-for the publication boundary.
+**[Ver el Actor en Apify →](https://apify.com/dekaz/eu-maritime-port-opportunity-monitor)**
