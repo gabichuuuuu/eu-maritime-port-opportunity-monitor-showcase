@@ -14,6 +14,8 @@ The source project remains private. This repository is the public window into th
 the problem, the signal model and the intended workflow without publishing implementation code, private
 test data or deployment configuration.
 
+**[Try the Actor in Apify Store →](https://apify.com/gabichuuuuu/eu-maritime-port-opportunity-monitor)**
+
 ## What it monitors
 
 - port, harbour, quay, berth, jetty, breakwater and terminal works;
@@ -45,7 +47,8 @@ scraper.
    keeps every official source as evidence.
 5. **History and change detection.** A stable monitor profile remembers what it has already reported
    and emits only meaningful lifecycle events: `NEW`, `UPDATED`, `DEADLINE_CHANGED`, `AWARDED` or
-   `CANCELLED`. A missing notice is never treated as a cancellation.
+   `CANCELLED`. A missing notice is never treated as a cancellation. Without a profile, a run is a
+   one-off snapshot of every qualified opportunity in the lookback window.
 
 Every qualified result carries the rules that matched and the links to the official notice. The product
 does not use an LLM or an opaque probability-of-winning score.
@@ -126,3 +129,5 @@ mismo evento nunca se cobra dos veces.
 
 No es un extractor de empleo. El código fuente permanece privado; este repositorio solo documenta el
 producto, su alcance y su evolución pública.
+
+**[Probar el Actor en Apify Store →](https://apify.com/gabichuuuuu/eu-maritime-port-opportunity-monitor)**

@@ -45,7 +45,8 @@ dropped.
 
 A `monitorId` identifies a commercial monitoring profile. Reusing it lets the Actor compare a new scan
 with the last successful observation and emit meaningful lifecycle changes without billing the same
-event twice.
+event twice. A run without a `monitorId` is a one-off snapshot: it reports every qualified opportunity
+in the lookback window and keeps no history.
 
 Scheduled runs are incremental: each source continues from where the previous run stopped, and a change
 of filters restarts the lookback window. Events beyond the run's result or spending limit are deferred
