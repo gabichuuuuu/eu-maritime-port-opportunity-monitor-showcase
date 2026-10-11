@@ -29,15 +29,28 @@ The monitor is intended to shorten discovery time, not to replace verification o
 
 ### Deterministic qualification
 
-The first version combines maritime CPV families, Spanish and English technical terms and authority
-signals. Matched rules are returned with each result so that the qualification can be inspected and
-adjusted by the user.
+Qualification combines maritime CPV families, Spanish and English technical terms and authority
+signals. A notice needs a primary maritime signal, either a maritime CPV code or a strong maritime term
+in its title; supporting terms only add evidence, and known false positives are excluded. Matched rules
+are returned with each result so that the qualification can be inspected and adjusted by the user.
+
+### Shared filter semantics
+
+Countries, NUTS regions, CPV branches, keywords, budget and publication date mean the same thing in
+every official source. A filter only excludes a notice that publishes the filtered field with a
+different value, so incomplete upstream records are left to the qualification step instead of being
+dropped.
 
 ### Stable history
 
 A `monitorId` identifies a commercial monitoring profile. Reusing it lets the Actor compare a new scan
 with the last successful observation and emit meaningful lifecycle changes without billing the same
 event twice.
+
+Scheduled runs are incremental: each source continues from where the previous run stopped, and a change
+of filters restarts the lookback window. Events beyond the run's result or spending limit are deferred
+to the next run, most relevant first, instead of being dropped. Each run reports per-source coverage so
+that a partial scan is visible and never produces negative lifecycle conclusions.
 
 ### Private implementation, public communication
 
@@ -49,4 +62,4 @@ private tests and deployment details remain in the private repository.
 - Runtime: Python Actor on Apify.
 - Integrations: official public interfaces for Spanish and European procurement and funding.
 - Output model: traceable opportunity events with source evidence and change metadata.
-- First release: API-first, deterministic and without LLM enrichment or PDF interpretation.
+- Current release (0.2): API-first, deterministic and without LLM enrichment or PDF interpretation.

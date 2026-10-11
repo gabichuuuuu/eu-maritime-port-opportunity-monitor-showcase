@@ -4,7 +4,7 @@
 
 > Procurement intelligence for companies working in ports, maritime construction and coastal infrastructure.
 
-**Private source · Public showcase · Work in progress**
+**Private source · Public showcase · Version 0.2**
 
 The EU Maritime & Port Opportunity Monitor is an Apify Actor for companies that need to find and follow
 public procurement opportunities before they disappear into an unfiltered notice feed. It focuses on
@@ -14,15 +14,13 @@ The source project remains private. This repository is the public window into th
 the problem, the signal model and the intended workflow without publishing implementation code, private
 test data or deployment configuration.
 
-**[View the live Actor on Apify →](https://apify.com/gabichuuuuu/eu-maritime-port-opportunity-monitor)**
-
 ## What it monitors
 
 - port, harbour, quay, berth, jetty, breakwater and terminal works;
 - dredging, reclamation and coastal-protection projects;
-- mooring, fendering, navigation and port-safety systems;
+- mooring, fendering, navigation, VTS and port-safety systems;
 - shore-side electricity, alternative fuels and port decarbonisation;
-- maritime engineering, geotechnical and environmental services.
+- maritime engineering, geotechnical, environmental and blue-economy services.
 
 ## Who it is for
 
@@ -33,18 +31,35 @@ teams preparing bids in Spain and the European Union.
 It is procurement intelligence for companies. It is not a jobs, vacancies, candidates or employment
 scraper.
 
-## What makes the signal useful
+## How a monitor works
 
-The monitor combines official procurement and funding signals with a deterministic maritime taxonomy:
+1. **Official sources.** Spanish and European procurement and funding interfaces are queried with one
+   shared filter model: countries, NUTS regions, CPV branches, keywords, budget and publication date
+   mean the same thing in every source.
+2. **Maritime prefilter.** Only notices with a maritime CPV branch or maritime terminology are kept for
+   qualification, so the scan budget is spent on relevant records.
+3. **Deterministic qualification.** A notice qualifies only with a primary maritime signal (a maritime
+   CPV code or a strong maritime term in its title). Supporting terms and buyer signals add evidence,
+   and known false positives, such as network-switch "ports" or loading docks, are excluded.
+4. **Cross-source identity.** The same project published in several sources becomes one event that
+   keeps every official source as evidence.
+5. **History and change detection.** A stable monitor profile remembers what it has already reported
+   and emits only meaningful lifecycle events: `NEW`, `UPDATED`, `DEADLINE_CHANGED`, `AWARDED` or
+   `CANCELLED`. A missing notice is never treated as a cancellation.
 
-1. official notices are normalised into a common opportunity model;
-2. CPV roots, Spanish and English technical terminology and buyer signals qualify the notice;
-3. related records from different sources are deduplicated;
-4. a stable monitor profile compares each scan with its previous state;
-5. the Actor emits only meaningful lifecycle events such as `NEW`, `UPDATED`, `AWARDED` or `CANCELLED`.
+Every qualified result carries the rules that matched and the links to the official notice. The product
+does not use an LLM or an opaque probability-of-winning score.
 
-Every qualified result carries the matched rules and official source links. The product does not use an
-LLM or an opaque probability-of-winning score in its first version.
+## Built for recurring monitors
+
+- **Incremental scanning.** Each scheduled run continues from where the previous run stopped in each
+  source, instead of downloading the same weeks of notices again.
+- **Nothing is silently dropped.** When a run reaches its result limit or its spending limit, the
+  remaining events are deferred to the next run, ordered by relevance.
+- **Honest coverage.** Each run reports, per source, whether coverage was full, partial or failed, and
+  why. Partial or failed scans never produce negative lifecycle conclusions.
+- **Bounded and billing-safe.** Inputs, scans and stored history have explicit limits, and an event is
+  never billed twice, even after a restart.
 
 ## Official signal families
 
@@ -60,10 +75,10 @@ or private customer data.
 ```mermaid
 flowchart LR
     SOURCES[Official procurement<br/>and funding sources]
-    NORMALIZE[Source adapters<br/>and normalisation]
-    QUALIFY[Maritime qualification<br/>CPV + multilingual rules]
-    DEDUPE[Cross-source<br/>deduplication]
-    HISTORY[Monitor history<br/>and change detection]
+    NORMALIZE[Source adapters<br/>shared filters · maritime prefilter]
+    QUALIFY[Maritime qualification<br/>primary signal + evidence]
+    DEDUPE[Cross-source<br/>project identity]
+    HISTORY[Monitor history<br/>incremental cursors · change detection]
     OUTPUT[Apify Dataset<br/>KVS · webhooks]
 
     SOURCES --> NORMALIZE
@@ -98,9 +113,16 @@ for the publication boundary.
 
 EU Maritime & Port Opportunity Monitor es un Actor de Apify para empresas que buscan licitaciones y
 señales tempranas de contratación pública en puertos, dragados, obras marítimas, protección costera,
-terminales y descarbonización.
+terminales y descarbonización portuaria.
+
+Consulta fuentes oficiales españolas y europeas (PLACSP, TED y Funding & Tenders), aplica un mismo
+modelo de filtros en todas ellas y califica cada anuncio con reglas marítimas deterministas: hace
+falta una señal principal, como un código CPV marítimo o un término marítimo claro en el título. Cada
+resultado incluye las reglas que lo calificaron y los enlaces al anuncio oficial.
+
+Pensado para monitores programados: cada ejecución continúa donde se quedó la anterior, los eventos que
+superan el límite de resultados o de gasto se aplazan a la siguiente ejecución en vez de perderse, y un
+mismo evento nunca se cobra dos veces.
 
 No es un extractor de empleo. El código fuente permanece privado; este repositorio solo documenta el
 producto, su alcance y su evolución pública.
-
-**[Ver el Actor en Apify →](https://apify.com/gabichuuuuu/eu-maritime-port-opportunity-monitor)**
